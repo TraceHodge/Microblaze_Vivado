@@ -8,4 +8,4 @@ Using the Digilent Custon Code reworked for the Basys Board and for updated vers
 
 Both Tutorial Videos Done and Submitted for Graduate Class:
 
-[Watch Tutorial Video]([https://drive.google.com/file/d/143IPhFBUfJ1dTVGH5OQrHGEBYwjRYRI7/view](https://drive.google.com/drive/folders/143IPhFBUfJ1dTVGH5OQrHGEBYwjRYRI7?usp=sharing))
+[Watch Tutorial Video](https://drive.google.com/drive/folders/143IPhFBUfJ1dTVGH5OQrHGEBYwjRYRI7?usp=sharing)
