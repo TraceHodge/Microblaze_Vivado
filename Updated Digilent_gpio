@@ -1,0 +1,51 @@
+#include "xparameters.h"
+#include "xgpio.h"
+#include "xil_printf.h"
+#include "xil_types.h"
+#include "sleep.h"
+
+// Use base addresses directly
+//NAMES MATTER
+#define BTN_BASEADDR XPAR_AXI_GPIO_BUTTONS_BASEADDR
+#define LED_BASEADDR XPAR_AXI_GPIO_LED_BASEADDR
+
+#define BTN_CHANNEL 1
+#define LED_CHANNEL 1
+
+#define BTN_MASK 0b1111
+#define LED_MASK 0xFFFF
+
+int main() {
+    XGpio_Config *cfg_ptr;
+    XGpio led_device, btn_device;
+    u32 data;
+
+    xil_printf("Entered function main\r\n");
+
+    // Initialize LED GPIO using base address
+    cfg_ptr = XGpio_LookupConfig(LED_BASEADDR);
+    if (!cfg_ptr) {
+        xil_printf("LED GPIO config not found!\r\n");
+        return -1;
+    }
+    XGpio_CfgInitialize(&led_device, cfg_ptr, cfg_ptr->BaseAddress);
+
+    // Initialize Button GPIO using base address
+    cfg_ptr = XGpio_LookupConfig(BTN_BASEADDR);
+    if (!cfg_ptr) {
+        xil_printf("Button GPIO config not found!\r\n");
+        return -1;
+    }
+    XGpio_CfgInitialize(&btn_device, cfg_ptr, cfg_ptr->BaseAddress);
+
+    // Set directions
+    XGpio_SetDataDirection(&btn_device, BTN_CHANNEL, BTN_MASK); // input
+    XGpio_SetDataDirection(&led_device, LED_CHANNEL, 0);         // output
+
+    while (1) {
+        data = XGpio_DiscreteRead(&btn_device, BTN_CHANNEL);
+        data &= BTN_MASK;
+        XGpio_DiscreteWrite(&led_device, LED_CHANNEL, data);
+        usleep(50000);  // debounce
+    }
+}
